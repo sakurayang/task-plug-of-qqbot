@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 r"""
-	                         _ooOoo_
+	                        _ooOoo_
                            o8888888o
                            88" . "88
                            (| -_- |)
@@ -45,7 +45,7 @@ def onQQMessage(bot, contact, menber, content):
 			bot.SendTo(contact, '时轴： %s' % undo.TITLE)
 	
 	elif content == '-task:tran':
-		data = AIC.select().where(AIC.TIMESCOOLDONE == 0)
+		data = AIC.select().where(AIC.TRANSLATEDONE == 0)
 		if not data:
 			bot.SendTo(contact, '无')
 			return
@@ -53,13 +53,22 @@ def onQQMessage(bot, contact, menber, content):
 			bot.SendTo(contact, '翻译：%s : %s' % (undo.TIMESCOOL, undo.TITLE))
 	
 	elif content == '-task:revi':
-		data = AIC.select().where(AIC.TIMESCOOLDONE == 0)
+		data = AIC.select().where(AIC.REVISIONDONE == 0)
 		if not data:
 			bot.SendTo(contact, '无')
 			return
 		for undo in data:
-			bot.SendTo(contact, '校对：%s：%s' % (AIC.REVISIONDONE, undo.TITLE))
-	
+			bot.SendTo(contact, '校对：%s：%s' % (AIC.TRANSLATE, undo.TITLE))
+	elif content.startWith('-task:time'):
+		data = AIC.select().where(AIC.TIMESCOOLDONE == 0)
+		arg = content[10:]
+		#例如-time:task:xxx,则arg=xxx
+		#然后遍历数据库，找到TITLE=xxx的。把那一行的TRANSLATE UPDATE为contact
+		#也可以这么来 
+		# if content.startWith('-task')
+		#	arg = content[5:]
+		#	if arg == ‘:time’
+		#		...and so on
 	elif content == '-all':
 		data = AIC.select()
 		if not data:
